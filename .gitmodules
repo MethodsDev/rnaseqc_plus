@@ -1,0 +1,6 @@
+[submodule "rnaseqc"]
+	path = rnaseqc
+	url = https://github.com/TrinityCTAT/rnaseqc.git
+[submodule "fastq_read_trimmer"]
+	path = fastq_read_trimmer
+	url = https://github.com/brianjohnhaas/fastq_read_trimmer.git
