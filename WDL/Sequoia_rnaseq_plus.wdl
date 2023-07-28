@@ -198,7 +198,6 @@ task align_reads_task {
 
     # untar the genome lib
     tar xvf ~{star_genome_idx_tar}
-    rm ~{star_genome_idx_tar}
     
     genomeDir="ctat_genome_lib_build_dir/ref_genome.fa.star.idx"
 
@@ -275,14 +274,19 @@ task rnaseqc_task {
    command <<<
      set -ex
 
-     rnaseqc ~{collapsed_ref_annot_gtf} ~{aligned_bam} . -u
 
-     mv ~{aligned_bam}.gene_reads.gct ~{sample_name}.rnaseqc.gene_reads.gct
-     mv ~{aligned_bam}.gene_fragments.gct ~{sample_name}.rnaseqc.gene_fragments.gct
-     mv ~{aligned_bam}.gene_tpm.gct ~{sample_name}.rnaseqc.gene_tpm.gct
-     mv ~{aligned_bam}.exon_reads.gct ~{sample_name}.rnaseqc.exon_reads.gct
-     mv ~{aligned_bam}.exon_cv.tsv ~{sample_name}.rnaseqc.exon_cv.tsv
-     mv ~{aligned_bam}.metrics.tsv ~{sample_name}.rnaseqc.metrics.tsv
+     ln -s ~{aligned_bam} ~{sample_name}.bam
+     ln -s ~{aligned_bam_bai} ~{sample_name}.bam.bai
+
+     rnaseqc ~{collapsed_ref_annot_gtf} ~{sample_name}.bam . -u
+
+     
+     mv ~{sample_name}.bam.gene_reads.gct ~{sample_name}.rnaseqc.gene_reads.gct
+     mv ~{sample_name}.bam.gene_fragments.gct ~{sample_name}.rnaseqc.gene_fragments.gct
+     mv ~{sample_name}.bam.gene_tpm.gct ~{sample_name}.rnaseqc.gene_tpm.gct
+     mv ~{sample_name}.bam.exon_reads.gct ~{sample_name}.rnaseqc.exon_reads.gct
+     mv ~{sample_name}.bam.exon_cv.tsv ~{sample_name}.rnaseqc.exon_cv.tsv
+     mv ~{sample_name}.bam.metrics.tsv ~{sample_name}.rnaseqc.metrics.tsv
 
      gzip ~{sample_name}.rnaseqc.*
      
