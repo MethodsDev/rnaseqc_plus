@@ -6,14 +6,12 @@ workflow Sequoia_rnaseq_plus_wf {
         String sample_name
         File fq_file
         File star_genome_idx_tar
-        Boolean trim_polyA
-
         File collapsed_ref_annot_gtf
 
         Int min_quality = 20
         Int min_read_length = 50
 
-        String docker="trinityctat/short_rnaseq_plus:latest"
+        String docker = "trinityctat/rnaseqc_plus:latest"
         Int cpu = 10
         String memory="50G"
         Int preemptible = 0
@@ -109,6 +107,8 @@ task trim_polyA_from_fastqs_task {
 
       fastq_polyAT_trimmer.py --left_fq ~{fq_file} --out_prefix ~{sample_name} 
 
+      mv ~{sample_name}_1.polyA-trimmed.fastq ~{sample_name}.polyA-trimmed.fastq
+
       gzip ~{sample_name}.polyA-trimmed.fastq
 
     >>>
@@ -151,7 +151,7 @@ task quality_trim_task {
     command <<<
       set -ex
 
-      java -jar /usr/local/bin/trimmomatic.jar SE -threads $cpu ~{fq_file} ~{sample_name}.qtrim_min~{min_quality}.fastq \
+      java -jar /usr/local/bin/trimmomatic.jar SE -threads ~{cpu} ~{fq_file} ~{sample_name}.qtrim_min~{min_quality}.fastq \
               SLIDINGWINDOW:4:~{min_quality} LEADING:~{min_quality} TRAILING:~{min_quality} MINLEN:~{min_read_length}
 
 
