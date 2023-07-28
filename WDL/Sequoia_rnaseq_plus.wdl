@@ -213,7 +213,7 @@ task align_reads_task {
     star_cmd="STAR \
             --runMode alignReads \
             --genomeDir ref_genome.fa.star.idx \
-            --runThreadN $cpu \
+            --runThreadN ~{cpu} \
             --readFilesIn ~{fq_file} \
             $readFilesCommand \
             --outSAMtype BAM SortedByCoordinate \
