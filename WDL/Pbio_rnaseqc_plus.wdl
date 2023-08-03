@@ -78,7 +78,7 @@ task align_reads_mm2_task {
     set -ex
 
 
-    minimap2 --junc-bed ~{mm2_splice_bed} -ax splice -u b -t ~{cpu} {mm2_genome_idx} ~{fq_file} > mm2.sam
+    minimap2 --junc-bed ~{mm2_splice_bed} -ax splice -u b -t ~{cpu} ~{mm2_genome_idx} ~{fq_file} > mm2.sam
 
     samtools view -Sb -o mm2.unsorted.bam mm2.sam
 
