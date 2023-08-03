@@ -21,21 +21,6 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     && rm -rf /var/lib/apt/lists/*
 
 
-
-
-
-
-
-
-WORKDIR /usr/local/src
-RUN git clone --recursive https://github.com/MethodsDev/rnaseqc_plus.git && \
-      cd rnaseqc_plus/rnaseqc && \
-      make && \
-      ln -sf /usr/local/src/rnaseqc_plus/rnaseqc/rnaseqc /usr/local/bin/rnaseqc && \
-      cp ../plugins/trimmomatic.jar /usr/local/bin && \
-      cp ../fastq_read_trimmer/fastq_polyAT_trimmer.py /usr/local/bin
-
-
 ENV SRC /usr/local/src
 ENV BIN /usr/local/bin
 
@@ -60,5 +45,26 @@ ENV STAR_VERSION=2.7.8a
 RUN STAR_URL="https://github.com/alexdobin/STAR/archive/${STAR_VERSION}.tar.gz" &&\
     wget -P $SRC $STAR_URL &&\
     tar -xvf $SRC/${STAR_VERSION}.tar.gz -C $SRC && \
-    mv $SRC/STAR-${STAR_VERSION}/bin/Linux_x86_64_static/STAR /usr/local/bin
+    mv $SRC/STAR-${STAR_VERSION}/bin/Linux_x86_64_static/STAR $BIN
+
+
+
+## rnaseqc submodule:
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/MethodsDev/rnaseqc_plus.git && \
+      cd rnaseqc_plus/rnaseqc && \
+      make && \
+      ln -sf /usr/local/src/rnaseqc_plus/rnaseqc/rnaseqc $BIN/rnaseqc && \
+      cp ../plugins/trimmomatic.jar $BIN
+
+
+########
+## Minimap2
+
+RUN apt-get update && apt-get install -y curl
+
+WORKDIR $SRC
+RUN curl -L https://github.com/lh3/minimap2/releases/download/v2.26/minimap2-2.26_x64-linux.tar.bz2 | tar -jxvf - && \
+    mv ./minimap2-2.26_x64-linux/minimap2 $BIN/
 
