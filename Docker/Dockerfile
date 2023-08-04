@@ -49,16 +49,6 @@ RUN STAR_URL="https://github.com/alexdobin/STAR/archive/${STAR_VERSION}.tar.gz" 
 
 
 
-## rnaseqc submodule:
-
-WORKDIR /usr/local/src
-RUN git clone --recursive https://github.com/MethodsDev/rnaseqc_plus.git && \
-      cd rnaseqc_plus/rnaseqc && \
-      make && \
-      ln -sf /usr/local/src/rnaseqc_plus/rnaseqc/rnaseqc $BIN/rnaseqc && \
-      cp ../plugins/trimmomatic.jar $BIN
-
-
 ########
 ## Minimap2
 
@@ -67,4 +57,16 @@ RUN apt-get update && apt-get install -y curl
 WORKDIR $SRC
 RUN curl -L https://github.com/lh3/minimap2/releases/download/v2.26/minimap2-2.26_x64-linux.tar.bz2 | tar -jxvf - && \
     mv ./minimap2-2.26_x64-linux/minimap2 $BIN/
+
+
+
+##############################################
+## rnaseqc_plus with custom rnaseqc submodule:
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/MethodsDev/rnaseqc_plus.git && \
+      cd rnaseqc_plus/rnaseqc && \
+      make && \
+      ln -sf /usr/local/src/rnaseqc_plus/rnaseqc/rnaseqc $BIN/rnaseqc && \
+      cp ../plugins/trimmomatic.jar $BIN
 
