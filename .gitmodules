@@ -1,3 +1,6 @@
 [submodule "rnaseqc"]
 	path = rnaseqc
 	url = https://github.com/TrinityCTAT/rnaseqc.git
+[submodule "Internal_Priming_Eval"]
+	path = Internal_Priming_Eval
+	url = https://github.com/MethodsDev/Internal_Priming_Eval.git
