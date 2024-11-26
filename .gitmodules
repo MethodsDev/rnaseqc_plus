@@ -4,3 +4,6 @@
 [submodule "Internal_Priming_Eval"]
 	path = Internal_Priming_Eval
 	url = https://github.com/MethodsDev/Internal_Priming_Eval.git
+[submodule "SQANTI3"]
+	path = SQANTI3
+	url = https://github.com/MethodsDev/SQANTI3.git
